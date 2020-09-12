@@ -5,6 +5,7 @@ import { db ,auth} from "./firebase";
 import Modal from '@material-ui/core/Modal';
 import {makeStyles} from '@material-ui/core/styles';
 import { Button, Input } from "@material-ui/core";
+import ImageUpload from "./ImageUpload";
 
 function getModalStyle() {
   const top = 50 ;
@@ -61,7 +62,8 @@ function App() {
 
 	// useEffect => runs a piece of code based on a specific condition
 	useEffect(() => {
-		//this is where the code runs ie runs everytime the variable post changes
+    //this is where the code runs ie runs everytime the variable post changes
+    //	db.collection("posts").orderBy('timestamp',"desc").onSnapshot((snapshot)
 		db.collection("posts").onSnapshot((snapshot) => {
 			//every time a new post is added ,this code fires
 			setPosts(
@@ -95,6 +97,11 @@ function App() {
 
 	return (
 		<div className="App">
+      {user?.displayName ?(
+       <ImageUpload  username ={user.displayName}/>
+      ):(
+        <h3>Sorry !! You need to login first !!</h3>
+      )}
       <Modal
         open={open}
         onClose={() => setOpen(false)}
