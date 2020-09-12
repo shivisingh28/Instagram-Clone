@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Post from "./Post";
-import { db } from "./firebase";
+import { db ,auth} from "./firebase";
 import Modal from '@material-ui/core/Modal';
 import {makeStyles} from '@material-ui/core/styles';
 import { Button, Input } from "@material-ui/core";
@@ -38,6 +38,25 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [user,setUser] =useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser)=>{
+      if(authUser){
+        //user has logged in.....
+        console.log(authUser);
+        setUser(authUser);
+        
+      }else{
+        //user has logged out....
+        setUser(null);
+      }
+    })
+    return ()=>{
+      //perform some cleanup actions
+      unsubscribe();
+    }
+  },[user,username]);
 
 	// useEffect => runs a piece of code based on a specific condition
 	useEffect(() => {
@@ -53,6 +72,17 @@ function App() {
 		});
   }, []);
   //[] this bracket means run the code only once
+  const signUp =(event)=>{
+     event.preventDefault(); // we always do this so that the page doesn't refresh while logging in
+    auth.createUserWithEmailAndPassword(email,password)
+    .then((authUser)=>{
+      authUser.user.updateProfile({
+        displayName:username
+      })
+    })
+
+    .catch((error)=>alert(error.message))
+    }
 	return (
 		<div className="App">
       <Modal
@@ -62,12 +92,14 @@ function App() {
         //aria-describedby="simple-modal-description"
       >
     <div style={modalStyle} className={classes.paper}>
+      <form className="app__signup">
       <center>
        <img className="app__headerImage"
 					src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
 					alt=""
           />
-          <Input
+      </center>
+      <Input
           placeholder="username"
           type="text"
           value={username}
@@ -87,8 +119,8 @@ function App() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           />
-          <Button onClick={handleLogin}>Login</Button>
-      </center>
+          <Button type="submit" onClick={signUp}>Login</Button>
+      </form>
     </div>
       </Modal>
 			<div className="app__header">
