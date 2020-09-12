@@ -4,11 +4,16 @@
 .app{
   background-color: #fafafa;
 }
-.app__headerImage{
+.app__header{
   background-color: white;
   padding: 20px;
   object-fit: contain;
   border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: space-between;
+}
+.app__headerImage{
+  object-fit: contain;
 }
 .app__signup{
   display: flex;
