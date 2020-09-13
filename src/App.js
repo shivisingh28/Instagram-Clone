@@ -6,7 +6,8 @@ import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Input } from "@material-ui/core";
 import ImageUpload from "./ImageUpload";
-import InstagramEmbed from 'react-instagram-embed';
+import InstagramEmbed from "react-instagram-embed";
+import firebase from "firebase";
 
 function getModalStyle() {
 	const top = 50;
@@ -63,7 +64,7 @@ function App() {
 	useEffect(() => {
 		//this is where the code runs ie runs everytime the variable post changes
 		//	db.collection("posts").orderBy('timestamp',"desc").onSnapshot((snapshot)
-		db.collection("posts").onSnapshot((snapshot) => {
+		db.collection("posts").orderBy('timestamp',"desc").onSnapshot((snapshot) => {
 			//every time a new post is added ,this code fires
 			setPosts(
 				snapshot.docs.map((doc) => ({
@@ -189,28 +190,35 @@ function App() {
 				)}
 			</div>
 			{/* Header */}
-      <div className="app__posts">
-      {posts.map(({ id, post }) => (
-				<Post
-					key={id}
-					username={post.username}
-					caption={post.caption}
-					imageUrl={post.imageUrl}
-				/>
-			))}
-      </div>
-      <InstagramEmbed
-      url='https://www.instagram.com/p/CBDtHwlAoEdjPXaZP0iTT9L4GchOT_pnRWEtGI0/'
-      maxWidth={320}
-      hideCaption={false}
-      containerTagName='div'
-      protocol=''
-      injectScript
-      onLoading={()=>{}}
-      onSuccess={()=>{}}
-      onAfterRender={()=>{}}
-      onFailure={()=>{}}
-      />
+			<div className="app__posts">
+				<div className="app__postsLeft">
+					{posts.map(({ id, post }) => (
+						<Post
+							key={id}
+							postId={id}
+							user={user}
+							username={post.username}
+							caption={post.caption}
+							imageUrl={post.imageUrl}
+						/>
+					))}
+				</div>
+				<div className="app__postRight">
+					<InstagramEmbed
+						url="https://www.instagram.com/p/CDySIJCgqFa/"
+						maxWidth={320}
+						hideCaption={false}
+						containerTagName="div"
+						protocol=""
+						injectScript
+						onLoading={() => {}}
+						onSuccess={() => {}}
+						onAfterRender={() => {}}
+						onFailure={() => {}}
+					/>
+				</div>
+			</div>
+
 			{user?.displayName ? (
 				<ImageUpload username={user.displayName} />
 			) : (

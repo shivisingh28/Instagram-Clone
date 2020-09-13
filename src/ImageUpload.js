@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import './ImageUpload.css';
 import React, { useState } from "react";
 import { storage, db } from "./firebase";
+import firebase from "firebase";
 
 function ImageUpload({ username }) {
 	const [image, setImage] = useState(null);
@@ -39,7 +40,7 @@ function ImageUpload({ username }) {
 					.then(url => {
 						//post image inside db
 						db.collection("posts").add({
-							//timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+							timestamp: firebase.firestore.FieldValue.serverTimestamp(),
 							caption: caption,
 							imageUrl: url,
 							username: username,

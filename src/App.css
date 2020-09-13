@@ -6,8 +6,17 @@
 }
 .app__posts{
   padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.app__postRight {
+  margin-left: 20px;
+  
 }
 .app__header{
+  position: sticky;
+  top: 0;
   background-color: white;
   padding: 20px;
   object-fit: contain;
