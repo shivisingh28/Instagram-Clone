@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## the project is deployed at 
+
+ open [https://elegant-montalcini-763e73.netlify.app/] to view the working app.
+ 
 ## Available Scripts
 
 In the project directory, you can run:
